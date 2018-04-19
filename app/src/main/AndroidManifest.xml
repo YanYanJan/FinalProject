@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
 
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 
 
     <application
@@ -21,7 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".postlistActivity"></activity>
+
+        <activity android:name=".BookListActivity"></activity>
+
         <activity android:name=".newpostActivity"></activity>
+
+        <activity android:name=".PostDetailActivity"></activity>
     </application>
 
 </manifest>

@@ -39,7 +39,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/title" />
+                    android:layout_toEndOf="@+id/title"
+                    android:textSize="20sp" />
+
 
             </RelativeLayout>
 
@@ -58,7 +60,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_centerVertical="true"
                     android:textSize="20sp"
-                    android:text="@string/author" />
+                    android:text="@string/author"/>
 
                 <EditText
                     android:id="@+id/author_edit"
@@ -66,7 +68,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="10dp"
-                    android:layout_toEndOf="@+id/author" />
+                    android:layout_toEndOf="@+id/author"
+                    android:textSize="20sp"
+                     />
 
             </RelativeLayout>
 

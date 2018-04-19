@@ -11,4 +11,17 @@
     <string name="startrecord">Record</string>
     <string name="stoprecord">Stop</string>
     <string name="palyback">Play</string>
+    <string name="start">Start</string>
+    <string name="post_name">BookTitle</string>
+    <string name="post_review">Reviews</string>
+    <string name="hashtag">Hashtag:</string>
+    <string name="datetime">mm/dd/yyyy</string>
+    <string name="Home">Home</string>
+    <string name="NewPost">New Post</string>
+    <string name="PostContent">Post Content</string>
+    <string name="Contact">Contact Us</string>
+    <string name="search">Search</string>
+    <string name="Instruction">Find the book you are reading!</string>
+    <string name="Createmyown">Start of my own!</string>
+    <string name="delete">Delete</string>
 </resources>

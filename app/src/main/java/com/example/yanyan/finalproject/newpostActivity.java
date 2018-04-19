@@ -1,20 +1,27 @@
 package com.example.yanyan.finalproject;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -24,16 +31,21 @@ import java.util.Date;
 public class newpostActivity extends AppCompatActivity {
 
     private Context mContext;
+    private static final String TAG = newpostActivity.class.getSimpleName();
     DatabaseHelper myDb;
-    EditText editbook, editauthor, edittags, editquote, editthoughts;
+    EditText edittags, editquote, editthoughts;
+    EditText editbook, editauthor;
     Button submit, record , stop;
     ImageButton playback;
     MediaRecorder mAudioRecorder;
     String audiooutput;
+    String bookcoverURL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.NewPost);
         setContentView(R.layout.newpost);
 
         myDb = new DatabaseHelper(this);
@@ -46,6 +58,19 @@ public class newpostActivity extends AppCompatActivity {
         final RatingBar ratingBar = (RatingBar)findViewById(R.id.ratebar);
         submit = findViewById(R.id.submit);
 
+        //load the book information from the previous searchview,get as a book
+
+        Boolean fetch = this.getIntent().getExtras().getBoolean("fetch");
+
+
+        if (fetch) {
+            Book book = (Book) getIntent().getSerializableExtra("book");
+            editbook.setText(book.getTitle());
+            editauthor.setText(book.getAuthor());
+            bookcoverURL = book.getCoverUrl();
+        }
+
+
 
         //audio recorder
         record = findViewById(R.id.startrecord);
@@ -54,8 +79,7 @@ public class newpostActivity extends AppCompatActivity {
         stop.setEnabled(false);
         playback.setEnabled(false);
 
-        audiooutput = Environment.getExternalStorageDirectory().getAbsolutePath()+"/recording.3gp";
-
+        audiooutput = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+System.currentTimeMillis()+"/recording.3gp";
         mAudioRecorder = new MediaRecorder();
         mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -67,6 +91,12 @@ public class newpostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
+//                    audiooutput = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/"+System.currentTimeMillis()+"/recording.3gp";
+//                    mAudioRecorder = new MediaRecorder();
+//                    mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//                    mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+//                    mAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+//                    mAudioRecorder.setOutputFile(audiooutput);
                     mAudioRecorder.prepare();
                     mAudioRecorder.start();
                 }catch (IllegalStateException ise){
@@ -86,7 +116,6 @@ public class newpostActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mAudioRecorder.stop();
                 mAudioRecorder.release();
-                mAudioRecorder = null;
                 record.setEnabled(true);
                 stop.setEnabled(false);
                 playback.setEnabled(true);
@@ -119,34 +148,60 @@ public class newpostActivity extends AppCompatActivity {
                 String rate = String.valueOf(ratingBar.getRating());
                 String book = editbook.getText().toString();
                 String author = editauthor.getText().toString();
-                String tags = edittags.getText().toString();
+                String hashtag = edittags.getText().toString();
                 String quote = editquote.getText().toString();
                 String thoughts = editthoughts.getText().toString();
+                String Bookcover = bookcoverURL;
                 String record = audiooutput;
 
                 //get the date and time when submitted
-                Date todayDate = new Date();
-                DateFormat dateFormat = DateFormat.getDateTimeInstance();
-                String datetime = dateFormat.format(todayDate);
-
-                boolean checksub = thoughts.equals("")&&record.equals("");
-
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String datetime = df.format(c.getTime());
+                //Toast.makeText(newpostActivity.this, datetime, Toast.LENGTH_LONG).show();
 
 
-//                boolean checksub = checksubmit(rate,book,author,thoughts,record);
+                Post post = new Post(book, author,hashtag, quote, rate, thoughts, record ,Bookcover,datetime);
 
-                if (rate.equals("")||book.equals("")||author.equals("")||checksub){
+
+
+                //boolean checksub = thoughts.equals("")&&record.equals("");
+
+                if (rate.isEmpty()||book.isEmpty()||author.isEmpty()||thoughts.isEmpty()){
                     Toast.makeText(newpostActivity.this, "Please complete the required information", Toast.LENGTH_LONG).show();
                 }
                 else{
-                    myDb.insertInput(book, author, tags, quote, rate, thoughts,record, datetime);
-                    Toast.makeText(newpostActivity.this, rate, Toast.LENGTH_LONG).show();
+                    //String book, String author, String tags, String quote, String rate, String thoughts,String record,String datetime
+                    if (myDb.insertData(book, author,hashtag, quote, rate, thoughts, record ,Bookcover,datetime)){
+                        Toast.makeText(newpostActivity.this, "New Post Submitted!", Toast.LENGTH_LONG).show();
 
+                        Intent intent = new Intent(newpostActivity.this,postlistActivity.class);
+                        startActivity(intent);
+
+
+                    }
+//                    myDb.insertInput(book, author, tags, quote, rate, thoughts,record, datetime);
                 }
+
+
             }
+
+
         });
 
     }
+
+//    @SuppressLint("SdCardPath")
+//    private String getFilename() {
+//        File file = new File("/sdcard", "MyFile");
+//
+//        if (!file.exists()) {
+//            file.mkdirs();
+//        }
+//
+//        return (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".mp3");
+//    }
+
 
 
 //    public boolean checksubmit(String rate, String book,String author,String thoughts,String record){

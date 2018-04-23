@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:id="@+id/post_list_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/post_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="3dp"
+            android:textSize="20sp"
+            android:text="@string/post_name"/>
+
+        <TextView
+            android:id="@+id/post_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="3dp"
+            android:textSize="20sp"
+            android:text="@string/rate" />
+
+        <TextView
+            android:id="@+id/post_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="3dp"
+            android:textSize="15sp"
+            android:maxLines="3"
+            android:layout_below="@id/post_title"
+            android:text="@string/post_review" />
+
+        <TextView
+            android:id="@+id/post_hashtag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:layout_below="@+id/post_review"
+            android:text="@string/hashtag" />
+
+        <TextView
+            android:id="@+id/post_datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:layout_below="@+id/post_review"
+            android:text="@string/datetime" />
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

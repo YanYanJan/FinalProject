@@ -24,4 +24,10 @@
     <string name="Instruction">Find the book you are reading!</string>
     <string name="Createmyown">Start of my own!</string>
     <string name="delete">Delete</string>
+    <string name="personname">Mr. CAT</string>
+    <string name="userintro">Hello Everyone! Hands shake!</string>
+
+
+    <string name="open_drawer">Drawer Open</string>
+    <string name="close_drawer">Drawer Close</string>
 </resources>

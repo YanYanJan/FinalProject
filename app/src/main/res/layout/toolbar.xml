@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <ImageButton
-        android:id="@+id/contact"
-        android:layout_width="45dp"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"
-        android:layout_gravity="right"
-        android:contentDescription="@string/Contact"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
-
+    android:layout_height="?attr/actionBarSize"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:text=""/>
 
 </android.support.v7.widget.Toolbar>

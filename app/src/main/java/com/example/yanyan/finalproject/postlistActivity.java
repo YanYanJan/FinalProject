@@ -7,9 +7,14 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +28,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -50,6 +56,10 @@ public class postlistActivity extends AppCompatActivity {
     ListView mpostlist;
     private static final String TAG = "postlistActivity";
 
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,28 +76,14 @@ public class postlistActivity extends AppCompatActivity {
         myDB = new DatabaseHelper(this);
         postlist = new ArrayList<>();
 
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open_drawer,R.string.close_drawer);
 
-        //generate the listview
-
-//        Log.d(TAG,"populateListView: Displaying data in the ListView");
-//        //get the data dan append to a list
-//        //ArrayList<Post> currentlist= new ArrayList<Post>();
-//        Cursor data = myDB.getAllData();
-//        while (data.moveToNext()){
-//            String book = data.getString(1);
-//            String author =data.getString(2);//tag
-//            String hashtag =data.getString(3);//rate
-//            String quote =data.getString(4);//author
-//            String rate = data.getString(5);//quote
-//            String thoughts =data.getString(6);
-//            String record = data.getString(7);
-//            String Bookcover = data.getString(8);
-//            String datetime =data.getString(9);
-//            Post post = new Post(book, author,hashtag, quote, rate, thoughts, record ,Bookcover,datetime);
-//            postlist.add(post);
-//        }
-//        Collections.reverse(postlist);
-
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        setupDrawerContent(navigationView);
 
         //set the spinners of sorting
         String[] sortalg = new String[]{"Sort by", "Newly Added","Highest Rate"};
@@ -237,6 +233,42 @@ public class postlistActivity extends AppCompatActivity {
         adapter = new PostAdapter(this,postlist);
         mpostlist.setAdapter(adapter);
     }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void selectItemDrawer(MenuItem menuItem){
+        switch(menuItem.getItemId()){
+            case R.id.nav_contact:
+                Toast.makeText(postlistActivity.this, "Contact!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+                intent.putExtra(Intent.EXTRA_EMAIL, "yany@oxy.edu");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+//                startActivity(intent);
+                startActivity(Intent.createChooser(intent, "ChoseEmailClient"));
+                break;
+        }
+        menuItem.setChecked(true);
+        mDrawerLayout.closeDrawers();
+    }
+    public void setupDrawerContent(NavigationView navigationView){
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectItemDrawer(item);
+                return true;
+            }
+        });
+    }
+
 
 
 

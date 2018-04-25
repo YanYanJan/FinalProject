@@ -68,9 +68,7 @@ public class postlistActivity extends AppCompatActivity {
         setContentView(R.layout.post_list);
 
         mContext = this;
-        contactbtn = findViewById(R.id.contact);
         create = findViewById(R.id.create);
-        sortSpinner =findViewById(R.id.sort);
 
         mpostlist = findViewById(R.id.post_list);
         myDB = new DatabaseHelper(this);
@@ -85,28 +83,7 @@ public class postlistActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         setupDrawerContent(navigationView);
 
-        //set the spinners of sorting
-        String[] sortalg = new String[]{"Sort by", "Newly Added","Highest Rate"};
-        ArrayAdapter<String> sortadpter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sortalg);
-        sortSpinner.setAdapter(sortadpter);
 
-        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String sortby =sortSpinner.getSelectedItem().toString();
-                if (sortby.equals("Highest Rate")){
-                    populateListview(sorthighest());
-                }
-                else{
-                    populateListview(getPostlist());
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         // click the list_item
         mpostlist.setOnItemClickListener( new AdapterView.OnItemClickListener(){
@@ -144,28 +121,37 @@ public class postlistActivity extends AppCompatActivity {
 
         });
 
-        //contact us by writing an email
-
-        contactbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
-                intent.putExtra(Intent.EXTRA_EMAIL, "yany@oxy.edu");
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-//                startActivity(intent);
-                startActivity(Intent.createChooser(intent, "ChoseEmailClient"));
-
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem item = menu.findItem(R.id.menuSearch);
+        MenuItem spinner = menu.findItem(R.id.spinner);
         searchView = (SearchView) item.getActionView();
+        sortSpinner =(Spinner) MenuItemCompat.getActionView(spinner);
+        String[] sortalg = new String[]{"Sort", "Newly Added","Highest Rate"};
+        ArrayAdapter<String> sortadpter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, sortalg);
+        sortSpinner.setAdapter(sortadpter);
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String sortby =sortSpinner.getSelectedItem().toString();
+                if (sortby.equals("Highest Rate")){
+                    populateListview(sorthighest());
+                }
+                else{
+                    populateListview(getPostlist());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -189,6 +175,9 @@ public class postlistActivity extends AppCompatActivity {
 
             }
         });
+
+
+
         return true;
     }
 

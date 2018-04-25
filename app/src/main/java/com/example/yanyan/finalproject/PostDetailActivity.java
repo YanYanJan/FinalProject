@@ -63,9 +63,7 @@ public class PostDetailActivity extends AppCompatActivity {
         final String audiopath =this.getIntent().getExtras().getString("record");
         final String datetime = this.getIntent().getExtras().getString("datetime");
         String bookcoverurl =this.getIntent().getExtras().getString("bookcover");
-
-
-        Picasso.with(this).load(Uri.parse(bookcoverurl)).error(R.drawable.ic_launcher_background).into(bookcover);
+//        Picasso.with(this).load(Uri.parse(bookcoverurl)).error(R.drawable.ic_launcher_background).into(bookcover);
 
         titleTV.setText(title);
         authorTV.setText(author);

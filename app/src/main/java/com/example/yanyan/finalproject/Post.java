@@ -115,6 +115,7 @@ public class Post {
     }
 
 
+
 //    public static Comparator<Post> ratecompare = new Comparator<Post>() {
 //
 //        public int compare(Post p1, Post p2) {

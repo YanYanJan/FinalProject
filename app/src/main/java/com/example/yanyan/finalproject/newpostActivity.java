@@ -62,86 +62,12 @@ public class newpostActivity extends AppCompatActivity {
 
         Boolean fetch = this.getIntent().getExtras().getBoolean("fetch");
 
-
         if (fetch) {
             Book book = (Book) getIntent().getSerializableExtra("book");
             editbook.setText(book.getTitle());
             editauthor.setText(book.getAuthor());
             bookcoverURL = book.getCoverUrl();
         }
-
-
-
-        //audio recorder
-        record = findViewById(R.id.startrecord);
-        stop = findViewById(R.id.stoprecord);
-        playback =findViewById(R.id.playrecord);
-        stop.setEnabled(false);
-        playback.setEnabled(false);
-
-        audiooutput = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+System.currentTimeMillis()+"/recording.3gp";
-        mAudioRecorder = new MediaRecorder();
-        mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mAudioRecorder.setOutputFile(audiooutput);
-
-        record.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                try {
-//                    audiooutput = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/"+System.currentTimeMillis()+"/recording.3gp";
-//                    mAudioRecorder = new MediaRecorder();
-//                    mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//                    mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//                    mAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-//                    mAudioRecorder.setOutputFile(audiooutput);
-                    mAudioRecorder.prepare();
-                    mAudioRecorder.start();
-                }catch (IllegalStateException ise){
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                record.setEnabled(false);
-                stop.setEnabled(true);
-
-                Toast.makeText(getApplicationContext(),"Recording started", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAudioRecorder.stop();
-                mAudioRecorder.release();
-                record.setEnabled(true);
-                stop.setEnabled(false);
-                playback.setEnabled(true);
-                Toast.makeText(getApplicationContext(),"Record complete", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        playback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MediaPlayer mediaPlayer= new MediaPlayer();
-
-                try{
-                    mediaPlayer.setDataSource(audiooutput);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                    Toast.makeText(getApplicationContext(),"Playing Audio", Toast.LENGTH_LONG).show();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -174,13 +100,12 @@ public class newpostActivity extends AppCompatActivity {
                     //String book, String author, String tags, String quote, String rate, String thoughts,String record,String datetime
                     if (myDb.insertData(book, author,hashtag, quote, rate, thoughts, record ,Bookcover,datetime)){
                         Toast.makeText(newpostActivity.this, "New Post Submitted!", Toast.LENGTH_LONG).show();
-
                         Intent intent = new Intent(newpostActivity.this,postlistActivity.class);
                         startActivity(intent);
 
 
                     }
-//                    myDb.insertInput(book, author, tags, quote, rate, thoughts,record, datetime);
+
                 }
 
 
@@ -188,6 +113,75 @@ public class newpostActivity extends AppCompatActivity {
 
 
         });
+
+        //audio recorder
+        record = findViewById(R.id.startrecord);
+        stop = findViewById(R.id.stoprecord);
+        playback =findViewById(R.id.playrecord);
+        stop.setEnabled(false);
+        playback.setEnabled(false);
+
+        audiooutput = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+System.currentTimeMillis()+"/recording.3gp";
+        mAudioRecorder = new MediaRecorder();
+        mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mAudioRecorder.setOutputFile(audiooutput);
+
+//        record.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View view) {
+//                try {
+////                    audiooutput = Environment.getExternalStorageDirectory().getAbsolutePath()+ "/"+System.currentTimeMillis()+"/recording.3gp";
+////                    mAudioRecorder = new MediaRecorder();
+////                    mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+////                    mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+////                    mAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+////                    mAudioRecorder.setOutputFile(audiooutput);
+//                    mAudioRecorder.prepare();
+//                    mAudioRecorder.start();
+//                }catch (IllegalStateException ise){
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                record.setEnabled(false);
+//                stop.setEnabled(true);
+//
+//                Toast.makeText(getApplicationContext(),"Recording started", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        stop.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mAudioRecorder.stop();
+//                mAudioRecorder.release();
+//                record.setEnabled(true);
+//                stop.setEnabled(false);
+//                playback.setEnabled(true);
+//                Toast.makeText(getApplicationContext(),"Record complete", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//        playback.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                MediaPlayer mediaPlayer= new MediaPlayer();
+//
+//                try{
+//                    mediaPlayer.setDataSource(audiooutput);
+//                    mediaPlayer.prepare();
+//                    mediaPlayer.start();
+//                    Toast.makeText(getApplicationContext(),"Playing Audio", Toast.LENGTH_LONG).show();
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
 
     }
 
